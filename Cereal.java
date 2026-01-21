@@ -124,8 +124,7 @@ public class Cereal {
         }
 
         if (cerealArray.length > 0) {
-            System.out.println("Average Rating: " + calculateAverageRating(cerealArray));
-            System.out.println("Standard Deviation of Rating: " + calculateStdevRating(cerealArray));
+            System.out.println("avg rating: " + calculateAverageRating(cerealArray));
 
             double averageRating = calculateAverageRating(cerealArray);
             double highestDeviation = 0;
@@ -140,10 +139,19 @@ public class Cereal {
             }
 
             System.out.println("Cereal with highest nutrition rating deviation: " + highestCereal.getName());
-        
+            
+            // for (Cereal cereal : cerealArray) {
+            //     System.out.println("Rating: " + cereal.getRating());
+            // }
+
+            double zScore = (highestCereal.getRating() - averageRating) / calculateStdevRating(cerealArray);
+            System.out.println("z score of cereal w highest rating deviation: " + zScore);
+
         } else {
-            System.err.println("No cereals found");
+            System.err.println("error");
         }
+
+
     }
 
     public String getName() {
