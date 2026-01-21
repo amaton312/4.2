@@ -63,19 +63,20 @@ public class Cereal {
                 '}';
     }
 
-    public static double calculateAverageRating(Cereal[] cereals) {
+    public static double calculateAverageDensity(Cereal[] cereals) {
         double total = 0;
         for (Cereal cereal : cereals) {
-            total += cereal.getRating();
+            total += cereal.getRating() / cereal.getCups();
         }
         return total / cereals.length;
     }
 
-    public static double calculateStdevRating(Cereal[] cereals) {
-        double average = calculateAverageRating(cereals);
+    public static double calculateStdevDensity(Cereal[] cereals) {
+        double average = calculateAverageDensity(cereals);
         double sumSquaredDiffs = 0;
         for (Cereal cereal : cereals) {
-            double diff = cereal.getRating() - average;
+            double density = cereal.getRating() / cereal.getCups();
+            double diff = density - average;
             sumSquaredDiffs += diff * diff;
         }
         return Math.sqrt(sumSquaredDiffs / cereals.length);
@@ -124,28 +125,29 @@ public class Cereal {
         }
 
         if (cerealArray.length > 0) {
-            System.out.println("avg rating: " + calculateAverageRating(cerealArray));
+            System.out.println("avg density: " + calculateAverageDensity(cerealArray));
 
-            double averageRating = calculateAverageRating(cerealArray);
+            double averageDensity = calculateAverageDensity(cerealArray);
             double highestDeviation = 0;
             Cereal highestCereal = null;
 
             for (Cereal cereal : cerealArray) {
-                double deviation = Math.abs(cereal.getRating() - averageRating);
+                double density = cereal.getRating() / cereal.getCups();
+                double deviation = Math.abs(density - averageDensity);
                 if (deviation > highestDeviation) {
                     highestDeviation = deviation;
                     highestCereal = cereal;
                 }
             }
 
-            System.out.println("Cereal with highest nutrition rating deviation: " + highestCereal.getName());
+            System.out.println("Cereal with highest nutrition density deviation: " + highestCereal.getName());
             
             // for (Cereal cereal : cerealArray) {
-            //     System.out.println("Rating: " + cereal.getRating());
+            //     System.out.println("Density: " + cereal.getRating() / cereal.getCups());
             // }
 
-            double zScore = (highestCereal.getRating() - averageRating) / calculateStdevRating(cerealArray);
-            System.out.println("z score of cereal w highest rating deviation: " + zScore);
+            double zScore = (highestCereal.getRating() / highestCereal.getCups() - averageDensity) / calculateStdevDensity(cerealArray);
+            System.out.println("z score of cereal w highest density deviation: " + zScore);
 
         } else {
             System.err.println("error");
